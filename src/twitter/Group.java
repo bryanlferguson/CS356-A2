@@ -22,7 +22,7 @@ public class Group implements Component, Visitor {
 
 	public void accept(Visitor v) {
 		for (Component component : components) {
-			v.visit(component);
+			v.accept(component);
 		}
 	}
 	
@@ -39,6 +39,12 @@ public class Group implements Component, Visitor {
 	}
 
 	public void visit(Component component) {
+		
+	}
+
+	@Override
+	public void accept(Component component) {
+		// TODO Auto-generated method stub
 		
 	}
 	

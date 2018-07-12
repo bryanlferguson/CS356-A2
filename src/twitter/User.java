@@ -22,7 +22,7 @@ public class User extends Observable implements Component {
 	}
 	
 	public void accept(Visitor v) {
-		v.visit(this);
+		//v.visit(this);
 	}
 	
 	public void follow(User u) {
