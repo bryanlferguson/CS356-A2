@@ -3,38 +3,30 @@ package twitter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Group implements Component {
-
-	private String id;
+public class UserTree implements Component{
+	
 	private List<Component> components;
 	
-	public Group(String id) {
-		this.id = id;
+	public UserTree() {
 		components = new ArrayList<Component>();
 	}
-	
 	public void setID(String id) {
-		this.id = id;
-	}
-
-	public String getID() {
-		return id;
-	}
-
-	public void accept(Visitor v) {
-		 v.visit(this);
-	}
-	
-	public void addToGroup(Component c) {
-		components.add(c);
-	}
-	
-	public List<Component> getMembers(){
-		return components;
-	}
-
-	public void addGroup(Group g) {
 		
 	}
 	
+
+
+	public String getID() {
+		return null;
+	}
+
+	public void accept(Visitor v) {
+		v.visit(this);
+	}
+	@Override
+	public void addGroup(Group g) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

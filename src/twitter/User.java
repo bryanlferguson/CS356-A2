@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 
-public class User extends Observable implements Composite {
+public class User extends Observable implements Component {
 	private String id;
 	List<User> followers;
 	List<User> following;
@@ -28,6 +28,7 @@ public class User extends Observable implements Composite {
 	public void follow(User u) {
 		u.addFollower(this);
 		following.add(u);
+		addObserver(new TweetObserver());
 	}
 	
 	public List<User> getFollowing() {
@@ -63,5 +64,6 @@ public class User extends Observable implements Composite {
 	public void setID(String id) {
 		this.id = id;
 	}
+
 
 }

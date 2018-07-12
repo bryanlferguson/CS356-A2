@@ -4,13 +4,17 @@ public class AdminView {
 	
 	protected static AdminView instance;
 	
-	protected AdminView() {
+	private AdminView() {
 		
 	}
 	
 	public static AdminView getInstance() {
 		if (instance == null) {
-			instance = new AdminView();
+			synchronized(AdminView.class) {
+				if (instance == null) {
+					instance = new AdminView();
+				}
+			}
 		} 
 		return instance;
 	}
