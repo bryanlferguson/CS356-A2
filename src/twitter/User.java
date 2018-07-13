@@ -64,6 +64,10 @@ public class User extends Observable implements Component {
 	public void setID(String id) {
 		this.id = id;
 	}
+	
+	public List<String> getTweets() {
+		return tweets;
+	}
 
 
 }

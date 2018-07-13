@@ -2,7 +2,7 @@ package twitter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Group implements Component, Visitor {
+public class Group implements Component {
 
 	private String id;
 	private List<Component> components;
@@ -21,9 +21,8 @@ public class Group implements Component, Visitor {
 	}
 
 	public void accept(Visitor v) {
-		for (Component component : components) {
-			v.accept(component);
-		}
+		v.atGroup(this);
+	
 	}
 	
 	public void addToGroup(Component c) {
@@ -41,11 +40,4 @@ public class Group implements Component, Visitor {
 	public void visit(Component component) {
 		
 	}
-
-	@Override
-	public void accept(Component component) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }

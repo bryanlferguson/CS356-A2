@@ -11,6 +11,9 @@ public class Driver {
 		
 		Group grouperino = new Group("CS 356 Study Group");
 		
+		TweetObserver to = new TweetObserver();
+		u.addObserver(to);
+		u.tweet("Memes");
 		r.addToGroup(u);
 		r.addToGroup(u2);
 		

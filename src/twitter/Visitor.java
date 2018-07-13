@@ -1,5 +1,6 @@
 package twitter;
 
 public interface Visitor {
-	public void accept(Component component);
+	public void atUser(User user);
+	public void atGroup(Group user);
 }
