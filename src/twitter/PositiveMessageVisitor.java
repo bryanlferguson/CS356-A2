@@ -1,22 +1,25 @@
 package twitter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class PositiveMessageVisitor implements Visitor {
-	private int positiveMessages;
+	private int positiveMessages, totalMessages;
 	private List<String> positiveWords;
 
 	public PositiveMessageVisitor() {
 		positiveMessages = 0;
+		totalMessages = 0;
 		positiveWords = new ArrayList<String>();
 		positiveWords.add("happy");
 		positiveWords.add("great");
 		positiveWords.add("awesome");
 		positiveWords.add("beautiful");
 		
+	}
+	
+	public double getNumPositiveMessages() {
+		return positiveMessages / totalMessages;
 	}
 	
 	@Override
@@ -29,7 +32,7 @@ public class PositiveMessageVisitor implements Visitor {
 					break;
 				}
 			}
-			
+			totalMessages++;
 		}
 	}
 

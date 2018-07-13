@@ -5,8 +5,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
-
 public class User extends Observable implements Component {
 	private String id;
 	List<User> followers;
@@ -22,7 +20,7 @@ public class User extends Observable implements Component {
 	}
 	
 	public void accept(Visitor v) {
-		//v.visit(this);
+		v.atUser(this);
 	}
 	
 	public void follow(User u) {

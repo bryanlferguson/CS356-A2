@@ -22,6 +22,9 @@ public class Group implements Component {
 
 	public void accept(Visitor v) {
 		v.atGroup(this);
+		for (Component component : components) {
+			component.accept(v);
+		}
 	
 	}
 	
