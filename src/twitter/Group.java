@@ -6,14 +6,26 @@ public class Group implements Component {
 
 	private String id;
 	private List<Component> components;
+	private Group parent;
 	
 	public Group(String id) {
 		this.id = id;
+		components = new ArrayList<Component>();
+		parent = null;
+	}
+	
+	public Group(String id, Group parent) {
+		this.id = id;
+		this.parent = parent;
 		components = new ArrayList<Component>();
 	}
 	
 	public void setID(String id) {
 		this.id = id;
+	}
+	
+	public Group getParent() {
+		return parent;
 	}
 
 	public String getID() {
@@ -34,13 +46,5 @@ public class Group implements Component {
 	
 	public List<Component> getMembers(){
 		return components;
-	}
-
-	public void addGroup(Group g) {
-		
-	}
-
-	public void visit(Component component) {
-		
 	}
 }

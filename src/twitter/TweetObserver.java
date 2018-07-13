@@ -10,6 +10,5 @@ public class TweetObserver implements Observer {
 			System.out.println("Tweet added!");
 			System.out.println(((User) s).getID() + ": " + ((User) s).getLastTweet());
 		}
-		
 	}
 }

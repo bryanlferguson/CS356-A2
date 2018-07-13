@@ -2,7 +2,6 @@ package twitter;
 
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.ArrayList;
 
 public class User extends Observable implements Component {
@@ -11,10 +10,9 @@ public class User extends Observable implements Component {
 	List<User> following;
 	List<String> tweets;
 	
-	
 	public User(String id) {
 		this.id = id;
-		followers = new ArrayList<User>();
+		followers = new ArrayList<User>();;
 		following = new ArrayList<User>();
 		tweets = new ArrayList<String>();
 	}

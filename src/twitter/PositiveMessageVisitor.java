@@ -19,7 +19,7 @@ public class PositiveMessageVisitor implements Visitor {
 	}
 	
 	public double getNumPositiveMessages() {
-		return positiveMessages / totalMessages;
+		return ((double) positiveMessages) / totalMessages;
 	}
 	
 	@Override
@@ -27,6 +27,7 @@ public class PositiveMessageVisitor implements Visitor {
 		List<String> usertweets = user.getTweets();
 		for (String tweet : usertweets) {
 			for (String positiveWord : positiveWords) {
+				System.out.println(tweet + " " + positiveWord);
 				if (tweet.toLowerCase().indexOf(positiveWord.toLowerCase()) != -1) {
 					positiveMessages++;
 					break;
