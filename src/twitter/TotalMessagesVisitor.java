@@ -19,6 +19,6 @@ public class TotalMessagesVisitor implements Visitor {
 
 	@Override
 	public void atGroup(Group user) {
-		// do nothing
+		// do nothing for groups
 	}
 }

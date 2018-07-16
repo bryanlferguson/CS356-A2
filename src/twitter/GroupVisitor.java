@@ -13,10 +13,10 @@ public class GroupVisitor implements Visitor{
 	}
 	
 	public void atUser(User user) {
-		//do nothing
+		//do nothing for users
 	}
 
-	public void atGroup(Group user) {
+	public void atGroup(Group group) {
 		numGroups++;
 	}
 

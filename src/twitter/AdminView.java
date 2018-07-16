@@ -138,7 +138,7 @@ public class AdminView {
 			public void actionPerformed(ActionEvent event) {
 				PositiveMessageVisitor pmv = new PositiveMessageVisitor();
 				root.accept(pmv);
-				alert("Percent of positive messages is: " + pmv.getNumPositiveMessages() + " percent");
+				alert("Percent of positive messages is: " + pmv.getNumPositiveMessages() + "%");
 			}
 		});
 

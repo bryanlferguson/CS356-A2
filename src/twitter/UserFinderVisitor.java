@@ -23,7 +23,7 @@ public class UserFinderVisitor implements Visitor {
 
 	@Override
 	public void atGroup(Group user) {
-		//Do nothing
+		//Do nothing for groups
 	}
 
 }

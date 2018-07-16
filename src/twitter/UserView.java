@@ -17,8 +17,8 @@ public class UserView {
 	private DefaultListModel<String> followList, tweetList;
 	private User user;
 
-	/**
-	 * Create the application.
+	/*
+	 * Constructor for the user view. Takes user ID for JPanel title.
 	 */
 	public UserView(User user) {
 		this.user = user;
@@ -26,8 +26,9 @@ public class UserView {
 		frame.setVisible(true);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
+	/*
+	 * Initialize the contents of the frame. Repopulates fields if there were
+	 * previously sent tweets or follows.
 	 */
 	private void initialize(String title) {
 		frame = new JFrame(title);
@@ -43,6 +44,8 @@ public class UserView {
 		JButton followUserButton = new JButton("Follow User");
 		followUserButton.setBounds(324, 13, 304, 52);
 		frame.getContentPane().add(followUserButton);
+		// Action listener to follow users based on the ID entered in the followUserID
+		// JTextField.
 		followUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				user.followUser(followUserID.getText());
@@ -63,6 +66,7 @@ public class UserView {
 		JButton tweetButton = new JButton("Post Tweet");
 		tweetButton.setBounds(427, 270, 201, 52);
 		frame.getContentPane().add(tweetButton);
+		// Action listener sent tweets based on the text in the tweetText JTextField.
 		tweetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				user.tweet(tweetText.getText());
@@ -77,7 +81,8 @@ public class UserView {
 		JLabel lblMessages = new JLabel("Messages");
 		lblMessages.setBounds(12, 332, 155, 16);
 		frame.getContentPane().add(lblMessages);
-
+		
+		//Persistence after closing user views.
 		repopulateFollowers();
 		repopulateTweets();
 	}
@@ -88,14 +93,14 @@ public class UserView {
 
 	private void repopulateTweets() {
 		for (String tweet : user.getNewsFeed()) {
-			tweetList.addElement(tweet);
+			updateTweetList(tweet);
 		}
 	}
 
 	private void repopulateFollowers() {
 		for (User following : user.getFollowing()) {
 			if (!following.getID().equals(user.getID())) {
-				followList.addElement(following.getID());
+				updateFollowers(following.getID());
 			}
 		}
 	}
