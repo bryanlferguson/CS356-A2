@@ -5,7 +5,11 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,7 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -112,17 +118,38 @@ public class AdminView {
 			}
 		});
 
-		JButton btnNewButton_4 = new JButton("Show Positive Percentage");
-		btnNewButton_4.setBounds(702, 564, 275, 55);
-		frame.getContentPane().add(btnNewButton_4);
+		JButton positivePercentageButton = new JButton("Show Positive Percentage");
+		positivePercentageButton.setBounds(702, 564, 275, 55);
+		frame.getContentPane().add(positivePercentageButton);
+		positivePercentageButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				PositiveMessageVisitor pmv = new PositiveMessageVisitor();
+				root.accept(pmv);
+				alert("Percent of positive messages is: " + pmv.getNumPositiveMessages() + " percent");
+			}
+		});
 
-		JButton btnNewButton_5 = new JButton("Show User Total");
-		btnNewButton_5.setBounds(415, 496, 275, 55);
-		frame.getContentPane().add(btnNewButton_5);
+		JButton userTotalButton = new JButton("Show User Total");
+		userTotalButton.setBounds(415, 496, 275, 55);
+		frame.getContentPane().add(userTotalButton);
+		userTotalButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				UserVisitor uv = new UserVisitor();
+				root.accept(uv);
+				alert("There are " + uv.getNumUsers() + " users.");
+			}
+		});
 
-		JButton btnNewButton_6 = new JButton("Show Group Total");
-		btnNewButton_6.setBounds(702, 496, 275, 55);
-		frame.getContentPane().add(btnNewButton_6);
+		JButton groupTotalButton = new JButton("Show Group Total");
+		groupTotalButton.setBounds(702, 496, 275, 55);
+		frame.getContentPane().add(groupTotalButton);
+		groupTotalButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				GroupVisitor gv = new GroupVisitor();
+				root.accept(gv);
+				alert("There are " + gv.getNumGroups() + " groups.");
+			}
+		});
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(12, 13, 391, 606);
@@ -137,15 +164,19 @@ public class AdminView {
 			alert("Please enter an ID!");
 		} else {
 			DefaultMutableTreeNode tempNode = getSelected();
-			Group tempGroup = (Group) tempNode.getUserObject();
+			if (tempNode != null && tempNode.getUserObject() instanceof Group) {
+				Group tempGroup = (Group) tempNode.getUserObject();
 
-			Group newGroup = new Group(newGroupID, tempGroup);
-			DefaultMutableTreeNode newGroupNode = new DefaultMutableTreeNode(newGroup);
+				Group newGroup = new Group(newGroupID, tempGroup);
+				DefaultMutableTreeNode newGroupNode = new DefaultMutableTreeNode(newGroup);
 
-			if (tempGroup.addToGroup(newGroup)) {
-				updateTree(newGroupNode, tempNode);
+				if (tempGroup.addToGroup(newGroup)) {
+					updateTree(newGroupNode, tempNode);
+				} else {
+					alert("ID already exists. Please use a unique ID and try again!");
+				}
 			} else {
-				alert("ID already exists. Please use a unique ID and try again!");
+				alert("Error! Select a group and try again!");
 			}
 		}
 	}
@@ -155,15 +186,19 @@ public class AdminView {
 			alert("Please enter an ID!");
 		} else {
 			DefaultMutableTreeNode tempNode = getSelected();
-			Group tempGroup = (Group) tempNode.getUserObject();
+			if (tempNode != null && tempNode.getUserObject() instanceof Group) {
+				Group tempGroup = (Group) tempNode.getUserObject();
 
-			User newUser = new User(newUserID, tempGroup);
-			DefaultMutableTreeNode newUserNode = new DefaultMutableTreeNode(newUser);
+				User newUser = new User(newUserID, tempGroup);
+				DefaultMutableTreeNode newUserNode = new DefaultMutableTreeNode(newUser);
 
-			if (tempGroup.addToGroup(newUser)) {
-				updateTree(newUserNode, tempNode);
+				if (tempGroup.addToGroup(newUser)) {
+					updateTree(newUserNode, tempNode);
+				} else {
+					alert("ID already exists. Please use a unique ID and try again!");
+				}
 			} else {
-				alert("ID already exists. Please use a unique ID and try again!");
+				alert("Error! Select a group and try again!");
 			}
 		}
 	}
@@ -181,8 +216,13 @@ public class AdminView {
 	private void alert(String message) {
 		JOptionPane.showMessageDialog(null, message);
 	}
-	
+
 	public DefaultMutableTreeNode getSelected() {
-		return ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent());
+		try {
+			return ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent());
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
+
 }

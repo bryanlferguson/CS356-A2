@@ -16,8 +16,7 @@ public class UserFinderVisitor implements Visitor {
 	
 	@Override
 	public void atUser(User user) {
-		System.out.println(targetID + " " + user.toString() + "here");
-		if (targetID.toLowerCase().equals(user.toString().toLowerCase())) {
+		if (targetID.toLowerCase().equals(user.getID().toLowerCase())) {
 			target = user;
 		}
 	}

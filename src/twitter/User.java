@@ -9,6 +9,7 @@ public class User extends Observable implements Component {
 	private List<User> followers;
 	private List<User> following;
 	private List<String> tweets;
+	private List<String> newsFeed;
 	private UserView userView;
 	private Group parent;
 	
@@ -17,7 +18,9 @@ public class User extends Observable implements Component {
 		followers = new ArrayList<User>();;
 		following = new ArrayList<User>();
 		tweets = new ArrayList<String>();
+		newsFeed = new ArrayList<String>();
 		this.parent = parent;
+		follow(this);
 	}
 	
 	public void accept(Visitor v) {
@@ -27,7 +30,11 @@ public class User extends Observable implements Component {
 	public void follow(User u) {
 		u.addFollower(this);
 		following.add(u);
-		addObserver(new TweetObserver());
+		u.addObserver(new TweetObserver(this));
+	}
+	
+	public String getID() {
+		return id;
 	}
 	
 	public List<User> getFollowing() {
@@ -57,7 +64,7 @@ public class User extends Observable implements Component {
 	}
 
 	public String toString() {
-		return id;
+		return "[User] " + id;
 	}
 	
 	public List<String> getTweets() {
@@ -76,12 +83,16 @@ public class User extends Observable implements Component {
 		Group root = getParent().getRoot();
 		UserFinderVisitor ufv = new UserFinderVisitor(userToFollow);		
 		root.accept(ufv);
-		System.out.println(ufv.getTarget().toString());
 		follow(ufv.getTarget());
 		userView.updateFollowers(userToFollow);
 	}
 	
+	public List<String> getNewsFeed(){
+		return newsFeed;
+	}
+	
 	public void updateTweetView(String message) {
 		userView.updateTweetList(message);
+		newsFeed.add(message);
 	}
 }

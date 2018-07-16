@@ -4,10 +4,15 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class TweetObserver implements Observer {
+	User user; 
+	
+	public TweetObserver(User user) {
+		this.user = user;
+	}
 	
 	public void update(Observable s, Object arg) {
 		if (s instanceof User) {
-			((User) s).updateTweetView(((User) s).toString() + ": " + ((User) s).getLastTweet());
+			user.updateTweetView(((User) s).getID() + ": " + ((User) s).getLastTweet());
 		}
 	}
 }

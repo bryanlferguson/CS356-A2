@@ -19,6 +19,9 @@ public class PositiveMessageVisitor implements Visitor {
 	}
 	
 	public double getNumPositiveMessages() {
+		if (totalMessages == 0) {
+			return 0.0;
+		}
 		return ((double) positiveMessages) / totalMessages;
 	}
 	

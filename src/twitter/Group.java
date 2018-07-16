@@ -34,9 +34,13 @@ public class Group implements Component {
 	}
 
 	public String toString() {
+		return "[Group] " + id;
+	}
+	
+	public String getID( ) {
 		return id;
 	}
-
+	
 	public void accept(Visitor v) {
 		v.atGroup(this);
 		for (Component component : components) {
@@ -46,12 +50,11 @@ public class Group implements Component {
 	}
 	
 	public boolean addToGroup(Component c) {
-		if (getRoot().getIDs().contains(c.toString())){
-			System.out.println("yesples");
+		if (getRoot().getIDs().contains(c.getID())){
 			return false;
 		}
 		components.add(c);
-		getRoot().getIDs().add(c.toString());
+		getRoot().getIDs().add(c.getID());
 		return true;
 	}
 	
@@ -60,12 +63,12 @@ public class Group implements Component {
 	}
 	
 	public boolean equals(Group g) {
-		return this.id.toLowerCase().equals(g.toString().toLowerCase());
+		return this.id.toLowerCase().equals(g.getID().toLowerCase());
 	}
 	
 	public Group getRoot() {
 		Group root = parent;
-		while (parent.toString() != "root") {
+		while (parent.getID() != "root") {
 			root = parent.getParent();
 		}
 		return root;
