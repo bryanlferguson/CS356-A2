@@ -3,7 +3,7 @@ package twitter;
 public class Driver {
 
 	public static void main(String[] args) {
-		AdminView.getInstance();
+		AdminView.getInstance().runWindow();;
 		
 		User u = new User("Bryan");
 		User u2 = new User("Anto");
@@ -25,6 +25,7 @@ public class Driver {
 		r.addToGroup(u2);
 		
 		u2.tweet("Happy day!");
+		
 		
 		r.accept(totalmessagesvisitor);
 		System.out.println(totalmessagesvisitor.getNumMessages());

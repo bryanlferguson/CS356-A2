@@ -53,7 +53,7 @@ public class User extends Observable implements Component {
 		notifyObservers(s);
 	}
 
-	public String getID() {
+	public String toString() {
 		return id;
 	}
 

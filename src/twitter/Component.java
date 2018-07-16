@@ -2,6 +2,6 @@ package twitter;
 
 public interface Component {
 	
-	public String getID();
+	public String toString();
 	public void accept(Visitor visitor);
 }

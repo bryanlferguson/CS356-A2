@@ -28,7 +28,7 @@ public class Group implements Component {
 		return parent;
 	}
 
-	public String getID() {
+	public String toString() {
 		return id;
 	}
 
