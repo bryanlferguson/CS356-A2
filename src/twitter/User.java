@@ -6,15 +6,18 @@ import java.util.ArrayList;
 
 public class User extends Observable implements Component {
 	private String id;
-	List<User> followers;
-	List<User> following;
-	List<String> tweets;
+	private List<User> followers;
+	private List<User> following;
+	private List<String> tweets;
+	private UserView userView;
+	private Group parent;
 	
-	public User(String id) {
+	public User(String id, Group parent) {
 		this.id = id;
 		followers = new ArrayList<User>();;
 		following = new ArrayList<User>();
 		tweets = new ArrayList<String>();
+		this.parent = parent;
 	}
 	
 	public void accept(Visitor v) {
@@ -56,14 +59,29 @@ public class User extends Observable implements Component {
 	public String toString() {
 		return id;
 	}
-
-	public void setID(String id) {
-		this.id = id;
-	}
 	
 	public List<String> getTweets() {
 		return tweets;
 	}
+	
+	public void openUserView() {
+		userView = new UserView(this);
+	}
+	
+	public Group getParent() {
+		return parent;
+	}
 
-
+	public void followUser(String userToFollow) {
+		Group root = getParent().getRoot();
+		UserFinderVisitor ufv = new UserFinderVisitor(userToFollow);		
+		root.accept(ufv);
+		System.out.println(ufv.getTarget().toString());
+		follow(ufv.getTarget());
+		userView.updateFollowers(userToFollow);
+	}
+	
+	public void updateTweetView(String message) {
+		userView.updateTweetList(message);
+	}
 }

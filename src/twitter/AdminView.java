@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -50,7 +51,7 @@ public class AdminView {
 	}
 
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame("Admin View");
 		frame.setBounds(100, 100, 1007, 679);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -58,7 +59,6 @@ public class AdminView {
 		rootNode = new DefaultMutableTreeNode(root);
 
 		txtUserId = new JTextField();
-		txtUserId.setText("User ID");
 		txtUserId.setBounds(415, 13, 275, 55);
 		frame.getContentPane().add(txtUserId);
 		txtUserId.setColumns(10);
@@ -66,18 +66,19 @@ public class AdminView {
 		JButton btnNewButton = new JButton("Add User");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				addUser(txtUserId.getText());
 			}
 		});
 		btnNewButton.setBounds(702, 13, 275, 55);
 		frame.getContentPane().add(btnNewButton);
 
 		txtGroupId = new JTextField();
-		txtGroupId.setText("Group ID");
 		txtGroupId.setBounds(415, 81, 275, 55);
 		frame.getContentPane().add(txtGroupId);
 		txtGroupId.setColumns(10);
-		
-		//Initialize the add group button, set its location, and add an Action Listener to add a group when it is clicked
+
+		// Initialize the add group button, set its location, and add an Action Listener
+		// to add a group when it is clicked
 		JButton addGroupButton = new JButton("Add Group");
 		addGroupButton.setBounds(702, 81, 275, 55);
 		frame.getContentPane().add(addGroupButton);
@@ -90,10 +91,26 @@ public class AdminView {
 		JButton openUserViewButton = new JButton("Open User View");
 		openUserViewButton.setBounds(415, 149, 562, 55);
 		frame.getContentPane().add(openUserViewButton);
+		openUserViewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				if (getSelected().getUserObject() instanceof User) {
+					((User) getSelected().getUserObject()).openUserView();
+				} else {
+					alert("Please select a user to see user view.");
+				}
+			}
+		});
 
-		JButton btnNewButton_3 = new JButton("Show Messages Total");
-		btnNewButton_3.setBounds(415, 564, 275, 55);
-		frame.getContentPane().add(btnNewButton_3);
+		JButton totalMessageButton = new JButton("Show Messages Total");
+		totalMessageButton.setBounds(415, 564, 275, 55);
+		frame.getContentPane().add(totalMessageButton);
+		totalMessageButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				TotalMessagesVisitor tmv = new TotalMessagesVisitor();
+				root.accept(tmv);
+				alert("There are " + tmv.getNumMessages() + " messages in total.");
+			}
+		});
 
 		JButton btnNewButton_4 = new JButton("Show Positive Percentage");
 		btnNewButton_4.setBounds(702, 564, 275, 55);
@@ -116,15 +133,56 @@ public class AdminView {
 	}
 
 	private void addGroup(String newGroupID) {
-		DefaultMutableTreeNode group1 = new DefaultMutableTreeNode(new Group(newGroupID));
-		DefaultMutableTreeNode tempNode = ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent());
-		updateTree(group1, tempNode);
+		if (newGroupID.equals("")) {
+			alert("Please enter an ID!");
+		} else {
+			DefaultMutableTreeNode tempNode = getSelected();
+			Group tempGroup = (Group) tempNode.getUserObject();
+
+			Group newGroup = new Group(newGroupID, tempGroup);
+			DefaultMutableTreeNode newGroupNode = new DefaultMutableTreeNode(newGroup);
+
+			if (tempGroup.addToGroup(newGroup)) {
+				updateTree(newGroupNode, tempNode);
+			} else {
+				alert("ID already exists. Please use a unique ID and try again!");
+			}
+		}
+	}
+
+	private void addUser(String newUserID) {
+		if (newUserID.equals("")) {
+			alert("Please enter an ID!");
+		} else {
+			DefaultMutableTreeNode tempNode = getSelected();
+			Group tempGroup = (Group) tempNode.getUserObject();
+
+			User newUser = new User(newUserID, tempGroup);
+			DefaultMutableTreeNode newUserNode = new DefaultMutableTreeNode(newUser);
+
+			if (tempGroup.addToGroup(newUser)) {
+				updateTree(newUserNode, tempNode);
+			} else {
+				alert("ID already exists. Please use a unique ID and try again!");
+			}
+		}
 	}
 
 	public void updateTree(DefaultMutableTreeNode nodeToAdd, DefaultMutableTreeNode containingNode) {
-		DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-		model.insertNodeInto(nodeToAdd, containingNode, containingNode.getChildCount());
-		tree.scrollPathToVisible(new TreePath(nodeToAdd.getPath()));
+		if (containingNode.getUserObject() instanceof Group) {
+			DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+			model.insertNodeInto(nodeToAdd, containingNode, containingNode.getChildCount());
+			tree.scrollPathToVisible(new TreePath(nodeToAdd.getPath()));
+		} else {
+			alert("Cannot add to User. Select a group and try again!");
+		}
 	}
 
+	private void alert(String message) {
+		JOptionPane.showMessageDialog(null, message);
+	}
+	
+	public DefaultMutableTreeNode getSelected() {
+		return ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent());
+	}
 }
