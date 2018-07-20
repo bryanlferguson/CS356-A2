@@ -16,6 +16,7 @@ public class UserView {
 	private JTextField followUserID, tweetText;
 	private DefaultListModel<String> followList, tweetList;
 	private User user;
+	private JLabel lblLastUpdateTime;
 
 	/*
 	 * Constructor for the user view. Takes user ID for JPanel title.
@@ -75,12 +76,20 @@ public class UserView {
 
 		tweetList = new DefaultListModel<String>();
 		JList<String> tweetDisplay = new JList<String>(tweetList);
-		tweetDisplay.setBounds(12, 351, 616, 211);
+		tweetDisplay.setBounds(12, 351, 616, 179);
 		frame.getContentPane().add(tweetDisplay);
 
 		JLabel lblMessages = new JLabel("Messages");
 		lblMessages.setBounds(12, 332, 155, 16);
 		frame.getContentPane().add(lblMessages);
+		
+		JLabel lblCreationTime = new JLabel("Creation time: " + user.getCreationTime());
+		lblCreationTime.setBounds(12, 546, 210, 16);
+		frame.getContentPane().add(lblCreationTime);
+		
+		lblLastUpdateTime = new JLabel("Last Update Time: " + user.getLastUpdateTime());
+		lblLastUpdateTime.setBounds(310, 546, 318, 16);
+		frame.getContentPane().add(lblLastUpdateTime);
 		
 		//Persistence after closing user views.
 		repopulateFollowers();
@@ -93,7 +102,7 @@ public class UserView {
 
 	private void repopulateTweets() {
 		for (String tweet : user.getNewsFeed()) {
-			updateTweetList(tweet);
+			tweetList.addElement(tweet);
 		}
 	}
 
@@ -107,6 +116,7 @@ public class UserView {
 
 	public void updateTweetList(String message) {
 		tweetList.addElement(message);
+		lblLastUpdateTime.setText("Last Update Time: " + user.getLastUpdateTime());
+		frame.update(frame.getGraphics());
 	}
-
 }

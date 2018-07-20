@@ -11,6 +11,7 @@ public class Group implements Component {
 	private List<Component> components;
 	private Set<String> ids;
 	private Group parent;
+	public final long creationTime;
 
 	/*
 	 * Constructor used for the root group.
@@ -20,6 +21,7 @@ public class Group implements Component {
 		components = new ArrayList<Component>();
 		parent = this;
 		ids = new HashSet<String>();
+		creationTime = 	System.currentTimeMillis();
 	}
 
 	/*
@@ -31,6 +33,7 @@ public class Group implements Component {
 		this.parent = parent;
 		components = new ArrayList<Component>();
 		ids = new HashSet<String>();
+		creationTime = 	System.currentTimeMillis();
 	}
 
 	public void setID(String id) {
@@ -96,5 +99,10 @@ public class Group implements Component {
 
 	public List<Component> getMembers() {
 		return components;
+	}
+
+	@Override
+	public long getCreationTime() {
+		return creationTime;
 	}
 }

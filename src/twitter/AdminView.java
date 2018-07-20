@@ -116,7 +116,7 @@ public class AdminView {
 
 		// Initialize the total messages button.
 		JButton totalMessageButton = new JButton("Show Messages Total");
-		totalMessageButton.setBounds(415, 564, 275, 55);
+		totalMessageButton.setBounds(415, 496, 275, 55);
 		frame.getContentPane().add(totalMessageButton);
 		// Adds action listener to use the TotalMessagesVisitor class to get the
 		// number of messages. Displays appropriate text box.
@@ -130,7 +130,7 @@ public class AdminView {
 
 		// Initialize the positive message percentage button.
 		JButton positivePercentageButton = new JButton("Show Positive Percentage");
-		positivePercentageButton.setBounds(702, 564, 275, 55);
+		positivePercentageButton.setBounds(702, 496, 275, 55);
 		frame.getContentPane().add(positivePercentageButton);
 		// Adds action listener to use the PositiveMessageVisitor class to get the
 		// percent of positive messages. Displays appropriate text box.
@@ -144,7 +144,7 @@ public class AdminView {
 
 		// Initialize User total button.
 		JButton userTotalButton = new JButton("Show User Total");
-		userTotalButton.setBounds(415, 496, 275, 55);
+		userTotalButton.setBounds(415, 428, 275, 55);
 		frame.getContentPane().add(userTotalButton);
 		// Adds action listener to use the UserVisitor class to get the
 		// number of users. Displays appropriate text box.
@@ -158,7 +158,7 @@ public class AdminView {
 
 		// Initialize Group total button
 		JButton groupTotalButton = new JButton("Show Group Total");
-		groupTotalButton.setBounds(702, 496, 275, 55);
+		groupTotalButton.setBounds(702, 428, 275, 55);
 		frame.getContentPane().add(groupTotalButton);
 		// Adds action listener to use the UserVisitor class to get the
 		// number of groups. Displays appropriate text box.
@@ -167,6 +167,34 @@ public class AdminView {
 				GroupVisitor gv = new GroupVisitor();
 				root.accept(gv);
 				alert("There are " + gv.getNumGroups() + " groups.");
+			}
+		});
+
+		// Initialize ID verification button
+		JButton verifyIDButton = new JButton("Verify IDs");
+		verifyIDButton.setBounds(415, 564, 275, 55);
+		frame.getContentPane().add(verifyIDButton);
+		// Adds an action listener to use the UserIDCheckerVisitor class to get the
+		// invalid user and group IDs. Displays appropriate text box.
+		verifyIDButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				UserIDCheckerVisitor uicv = new UserIDCheckerVisitor();
+				root.accept(uicv);
+				alert(uicv.getBadIDs());
+			}
+		});
+
+		// Initialize Last updated user button
+		JButton lastUpdatedUserButton = new JButton("Last Updated User");
+		lastUpdatedUserButton.setBounds(702, 564, 275, 55);
+		frame.getContentPane().add(lastUpdatedUserButton);
+		// Adds an action listener to use the LastUpdatedUserVisitor class to get the ID
+		// of the user that was last updated.
+		lastUpdatedUserButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				LastUpdatedUserVisitor luuv = new LastUpdatedUserVisitor();
+				root.accept(luuv);
+				alert("Last updated user: " + luuv.getLastUpdatedUser());
 			}
 		});
 
